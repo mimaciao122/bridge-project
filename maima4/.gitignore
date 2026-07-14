@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Variabili d'ambiente / segreti
+.env
+.env.*
+!.env.example
+
+# Log di audit generati a runtime
+audit_test.jsonl
+*.jsonl
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
