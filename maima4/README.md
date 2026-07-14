@@ -1,8 +1,8 @@
 # Bridge Project
 
-Un ponte tra un assistente locale e un provider AI esterno (Hugging Face o Groq).
+Un ponte tra un assistente locale e un provider AI esterno (
 
-## Cos'è, in due parole
+## Cos'è
 
 Immagina di avere un assistente che gira in locale e che, per certe operazioni,
 ha bisogno di appoggiarsi a un modello AI più potente disponibile solo online.
@@ -14,16 +14,16 @@ Questo bridge sta in mezzo. L'assistente non chiama mai il provider esterno
 da solo — passa sempre da qui, e ogni richiesta attraversa tre controlli in
 sequenza prima di uscire:
 
-1. **Whitelist** — l'operazione richiesta è autorizzata per quell'agente?
-2. **Rate limit** — quell'agente ha superato i limiti di richieste/volume?
-3. **Redazione** — email, IBAN, telefoni, importi e simili vengono oscurati
+1. **Whitelist** :l'operazione richiesta è autorizzata per quell'agente?
+2. **Rate limit** :quell'agente ha superato i limiti di richieste/volume?
+3. **Redazione** :email, IBAN, telefoni, importi e simili vengono oscurati
    automaticamente prima che il testo esca verso l'esterno.
 
-Ogni decisione (accettata, accettata-con-redazione, o rifiutata) viene
+Ogni decisione (accettata, accettata con redazione, o rifiutata) viene
 scritta in un log di audit con hash di integrità, così è sempre verificabile
 a posteriori se qualcosa è stato manomesso.
 
-Se in futuro vuoi cambiare provider (da Hugging Face a Groq, o a qualcos'altro),
+Se in futuro vuoi cambiare provider,
 lo fai cambiando una variabile d'ambiente — l'interfaccia verso l'assistente
 resta identica.
 
@@ -35,7 +35,7 @@ resta identica.
 
 ## Avvio rapido (senza provider esterni veri)
 
-Questa modalità usa uno "stub" locale al posto di un vero provider AI — utile
+Questa modalità usa uno "stub" locale al posto di un vero provider AI, utile
 per testare il bridge senza bisogno di chiavi API.
 
 ```bash
@@ -44,7 +44,7 @@ pip3 install -r requirements.txt
 ```
 
 Poi, **tutti i comandi seguenti vanno lanciati nello stesso terminale**, uno
-dopo l'altro, senza chiuderlo — le variabili d'ambiente impostate con `export`
+dopo l'altro, senza chiuderlo, le variabili d'ambiente impostate con `export`
 valgono solo per la sessione di terminale in cui le scrivi:
 
 ```bash
@@ -101,12 +101,11 @@ python3 bridge/main.py --operation summarize --payload "Testo da riassumere" --s
 ```
 
 Il token va creato gratuitamente su
-[huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) — la
+[huggingface.co/settings/tokens](https://huggingface.co/settings/tokens) la
 Inference API oggi richiede sempre un token valido, le chiamate anonime non
 sono più affidabili.
 
-### Groq (free tier generoso, modelli Llama)
-
+### Groq 
 ```bash
 export USE_REAL_ADAPTER=1
 export BRIDGE_ADAPTER=groq
@@ -165,16 +164,16 @@ local_assistant.py           # assistente locale minimo, pronto all'uso
 
 ## Problemi comuni
 
-**"command not found: pip"** — su Mac usa `pip3` o `python3 -m pip` al posto
+**"command not found: pip"** su Mac usa `pip3` o `python3 -m pip` al posto
 di `pip`.
 
-**Il server si rifiuta di partire con un errore su `BRIDGE_AGENTS_JSON`** —
+**Il server si rifiuta di partire con un errore su `BRIDGE_AGENTS_JSON`**
 la variabile va impostata con `export` nello *stesso* terminale, appena prima
 di lanciare `uvicorn`. Se chiudi il terminale o ne apri uno nuovo, va
 reimpostata.
 
 **Ho modificato `bridge/static/index.html` ma il browser mostra ancora la
-versione vecchia** — è quasi sempre cache del browser, non un problema del
+versione vecchia** è quasi sempre cache del browser, non un problema del
 server. Prova un hard refresh (`Cmd+Shift+R` su Mac), oppure apri la pagina
 in una finestra privata/anonima, oppure riavvia il server su una porta mai
 usata prima (es. `--port 9091`) per essere sicuro al 100% che non ci sia
