@@ -1,6 +1,6 @@
 # Bridge Project
 
-Un ponte tra un assistente locale e un provider AI esterno (
+Un ponte tra un assistente locale e un provider AI esterno
 
 ## Cos'è
 
