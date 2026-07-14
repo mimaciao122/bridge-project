@@ -3,156 +3,193 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ponte — Local AI Bridge</title>
+<title>Ponte</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0a1420;
-    --bg-deep: #060d16;
-    --panel: #101d2e;
-    --border: #223650;
-    --text: #e4ecf5;
-    --muted: #7d93ac;
-    --amber: #f2a93c;
-    --cyan: #3ee6d0;
-    --violet: #a48af5;
-    --coral: #ff6b5e;
+    --paper: #ece5d4;
+    --paper-2: #e2d9c2;
+    --panel: #f5f0e3;
+    --ink: #211d17;
+    --ink-soft: #6e6455;
+    --line: #cabd9d;
+    --sage: #3f5d49;
+    --sage-dark: #2b4234;
+    --ochre: #a8792e;
+    --brick: #8c4536;
   }
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    font-family: 'Space Grotesk', sans-serif;
-    background:
-      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(62,230,208,0.06), transparent),
-      var(--bg);
-    color: var(--text);
-    padding: 40px 16px 60px;
+    font-family: 'JetBrains Mono', monospace;
+    background: var(--paper);
+    background-image: repeating-linear-gradient(0deg, rgba(33,29,23,0.02) 0px, rgba(33,29,23,0.02) 1px, transparent 1px, transparent 27px);
+    color: var(--ink);
+    padding: 48px 18px 70px;
   }
-  .wrap { max-width: 760px; margin: 0 auto; }
-  .eyebrow {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  .kicker {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--cyan);
-    margin-bottom: 6px;
+    color: var(--sage-dark);
+    margin-bottom: 10px;
   }
-  h1 { font-size: 1.75rem; font-weight: 700; margin: 0 0 4px; letter-spacing: -0.01em; }
-  .sub { color: var(--muted); margin-bottom: 28px; font-size: 0.92rem; }
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0 0 12px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  h1::after {
+    content: '_';
+    color: var(--sage);
+    animation: blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .sub {
+    color: var(--ink-soft);
+    margin-bottom: 32px;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    max-width: 48ch;
+    border-left: 2px solid var(--sage);
+    padding-left: 14px;
+  }
+
   .panel {
     background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 22px;
-    margin-bottom: 18px;
+    border: 1px solid var(--line);
+    padding: 24px;
+    margin-bottom: 20px;
   }
   .panel-title {
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    color: var(--sage-dark);
+    margin-bottom: 18px;
   }
-  .status-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-  .status-line { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
-  .dot.up { background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
-  .dot.down { background: var(--coral); box-shadow: 0 0 8px var(--coral); }
-  a.docs-link { color: var(--muted); font-size: 0.82rem; font-family: 'IBM Plex Mono', monospace; text-decoration: none; border-bottom: 1px dotted var(--muted); }
-  a.docs-link:hover { color: var(--cyan); border-color: var(--cyan); }
+  .panel-title::before { content: '// '; color: var(--line); }
+
+  .status-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .status-line { display: flex; align-items: center; gap: 9px; font-size: 0.86rem; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-soft); flex-shrink: 0; }
+  .dot.up { background: var(--sage); }
+  .dot.down { background: var(--brick); }
+  a.docs-link {
+    color: var(--ink-soft);
+    font-size: 0.78rem;
+    text-decoration: none;
+    border-bottom: 1px dashed var(--line);
+  }
+  a.docs-link:hover { color: var(--sage-dark); border-color: var(--sage-dark); }
+
   label {
     display: block;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.06em;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 6px;
-    margin-top: 16px;
+    color: var(--ink-soft);
+    margin-bottom: 7px;
+    margin-top: 18px;
   }
-  label:first-child { margin-top: 0; }
+  label:first-of-type { margin-top: 0; }
   input, select, textarea {
     width: 100%;
-    background: var(--bg-deep);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    color: var(--text);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    color: var(--ink);
     padding: 10px 12px;
-    font-size: 0.9rem;
-    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.87rem;
+    font-family: 'JetBrains Mono', monospace;
   }
   input:focus, select:focus, textarea:focus {
     outline: none;
-    border-color: var(--cyan);
-    box-shadow: 0 0 0 3px rgba(62,230,208,0.12);
+    border-color: var(--sage);
   }
-  textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
-  .row { display: flex; gap: 12px; }
+  textarea { resize: vertical; min-height: 90px; line-height: 1.55; }
+  .row { display: flex; gap: 14px; }
   .row > div { flex: 1; }
+
   button {
-    margin-top: 20px;
-    background: var(--cyan);
-    color: #06251f;
-    border: none;
-    border-radius: 7px;
-    padding: 12px 20px;
-    font-family: 'Space Grotesk', sans-serif;
+    margin-top: 22px;
+    background: var(--sage);
+    color: var(--panel);
+    border: 1px solid var(--sage-dark);
+    padding: 11px 22px;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.92rem;
-    font-weight: 700;
     cursor: pointer;
-    transition: transform 0.1s ease, opacity 0.15s ease;
+    transition: background 0.15s ease;
+    letter-spacing: 0.03em;
   }
-  button:hover { opacity: 0.9; }
-  button:active { transform: scale(0.98); }
-  button:disabled { opacity: 0.45; cursor: not-allowed; }
-  .bridge-panel { padding-bottom: 26px; }
+  button:hover { background: var(--sage-dark); }
+  button:active { transform: translateY(1px); }
+  button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .bridge-panel { padding-bottom: 30px; }
   .bridge-svg { width: 100%; height: auto; display: block; }
-  .shore-label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; fill: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-  .checkpoint-label { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; fill: var(--muted); }
-  .pylon { transition: stroke 0.35s ease, filter 0.35s ease; }
-  .pylon-fill { transition: fill 0.35s ease; }
+  .shore-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+  .checkpoint-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: var(--ink-soft); }
+  .stamp { transition: stroke 0.3s ease; }
+  .stamp-fill { transition: fill 0.3s ease; }
+
   pre {
     white-space: pre-wrap;
     word-break: break-word;
-    background: var(--bg-deep);
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    background: var(--paper);
+    border: 1px solid var(--line);
     padding: 16px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 0.83rem;
-    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    margin-top: 12px;
     line-height: 1.6;
+    color: var(--ink-soft);
   }
-  .badge { display: inline-block; padding: 3px 10px; border-radius: 5px; font-size: 0.74rem; font-weight: 600; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.03em; }
-  .badge.allow { background: rgba(62,230,208,0.14); color: var(--cyan); }
-  .badge.redact { background: rgba(164,138,245,0.14); color: var(--violet); }
-  .badge.deny { background: rgba(255,107,94,0.14); color: var(--coral); }
-  .badge.neutral { background: rgba(125,147,172,0.14); color: var(--muted); }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    border: 2px solid currentColor;
+    transform: rotate(-1.5deg);
+  }
+  .badge.allow { color: var(--sage-dark); }
+  .badge.redact { color: var(--ochre); }
+  .badge.deny { color: var(--brick); border-style: dashed; }
+  .badge.neutral { color: var(--ink-soft); border-color: var(--line); }
+
   #resultPanel { display: none; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="eyebrow">local ai bridge</div>
-  <h1>Ponte</h1>
-  <div class="sub">Ogni richiesta attraversa i checkpoint reali del bridge prima di raggiungere il provider esterno.</div>
+  <div class="kicker">$ ./bridge --status</div>
+  <h1>Il Ponte</h1>
+  <div class="sub">Ogni richiesta passa dai controlli veri del bridge prima di raggiungere il provider esterno: whitelist, limite di volume, oscuramento dei dati sensibili.</div>
 
   <div class="panel">
     <div class="status-row">
       <div class="status-line">
         <span id="healthDot" class="dot"></span>
-        <span id="health">verifica in corso…</span>
+        <span id="health">verifica in corso</span>
       </div>
-      <a class="docs-link" href="/docs" target="_blank">documentazione → /docs</a>
+      <a class="docs-link" href="/docs" target="_blank">documentazione tecnica</a>
     </div>
   </div>
 
   <div class="panel">
     <div class="panel-title">Componi richiesta</div>
-    <label>X-Bridge-Key</label>
+
+    <label>Chiave agente</label>
     <input id="apiKey" type="text" placeholder="chiave-super-segreta-1" value="chiave-super-segreta-1">
+
     <div class="row">
       <div>
         <label>Operazione</label>
@@ -172,47 +209,56 @@
         </select>
       </div>
     </div>
-    <label>Payload</label>
+
+    <label>Testo</label>
     <textarea id="payload">Contatta mario.rossi@example.com per il bonifico di 250 EUR.</textarea>
-    <label>Max output tokens</label>
+
+    <label>Massimo token in output</label>
     <input id="maxTokens" type="number" value="300" min="1" max="4000">
-    <button id="sendBtn">Invia richiesta →</button>
+
+    <button id="sendBtn">Invia richiesta</button>
   </div>
 
   <div class="panel bridge-panel">
     <div class="panel-title">Percorso della richiesta</div>
     <svg class="bridge-svg" viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg">
-      <line x1="40" y1="90" x2="680" y2="90" stroke="#24374e" stroke-width="3" id="deckLine"/>
-      <circle cx="40" cy="90" r="7" fill="#4f6a86"/>
-      <text x="40" y="120" text-anchor="middle" class="shore-label">agente</text>
+      <line x1="40" y1="90" x2="680" y2="90" stroke="#cabd9d" stroke-width="1.5" stroke-dasharray="1 6" id="deckLine"/>
+
+      <circle cx="40" cy="90" r="6" fill="#8a7f68"/>
+      <text x="40" y="118" text-anchor="middle" class="shore-label">agente</text>
+
       <g id="cp-whitelist">
-        <line x1="190" y1="60" x2="190" y2="90" stroke="#24374e" stroke-width="3" class="pylon"/>
-        <circle cx="190" cy="55" r="9" fill="#16283c" stroke="#24374e" stroke-width="2.5" class="pylon"/>
-        <text x="190" y="120" text-anchor="middle" class="checkpoint-label">whitelist</text>
+        <circle cx="190" cy="90" r="15" fill="none" stroke="#cabd9d" stroke-width="2" class="stamp"/>
+        <text x="190" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#cabd9d" class="stamp-text" opacity="0">OK</text>
+        <text x="190" y="122" text-anchor="middle" class="checkpoint-label">whitelist</text>
       </g>
+
       <g id="cp-ratelimit">
-        <line x1="340" y1="60" x2="340" y2="90" stroke="#24374e" stroke-width="3" class="pylon"/>
-        <circle cx="340" cy="55" r="9" fill="#16283c" stroke="#24374e" stroke-width="2.5" class="pylon"/>
-        <text x="340" y="120" text-anchor="middle" class="checkpoint-label">rate limit</text>
+        <circle cx="340" cy="90" r="15" fill="none" stroke="#cabd9d" stroke-width="2" class="stamp"/>
+        <text x="340" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#cabd9d" class="stamp-text" opacity="0">OK</text>
+        <text x="340" y="122" text-anchor="middle" class="checkpoint-label">volume</text>
       </g>
+
       <g id="cp-redact">
-        <line x1="490" y1="60" x2="490" y2="90" stroke="#24374e" stroke-width="3" class="pylon" stroke-dasharray="3 3"/>
-        <circle cx="490" cy="55" r="9" fill="#16283c" stroke="#24374e" stroke-width="2.5" class="pylon"/>
-        <text x="490" y="120" text-anchor="middle" class="checkpoint-label">redazione</text>
+        <circle cx="490" cy="90" r="15" fill="none" stroke="#cabd9d" stroke-width="2" stroke-dasharray="2 3" class="stamp"/>
+        <text x="490" y="94" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#cabd9d" class="stamp-text" opacity="0">OK</text>
+        <text x="490" y="122" text-anchor="middle" class="checkpoint-label">oscuramento</text>
       </g>
+
       <g id="cp-provider">
-        <circle cx="680" cy="90" r="7" fill="#4f6a86" class="pylon-fill"/>
-        <text x="680" y="120" text-anchor="middle" class="shore-label">provider</text>
+        <circle cx="680" cy="90" r="6" fill="#8a7f68" class="stamp-fill"/>
+        <text x="680" y="118" text-anchor="middle" class="shore-label">provider</text>
       </g>
-      <circle id="token" cx="40" cy="90" r="5.5" fill="#e4ecf5" opacity="0"/>
+
+      <circle id="token" cx="40" cy="90" r="4" fill="#211d17" opacity="0"/>
     </svg>
   </div>
 
   <div class="panel" id="resultPanel">
     <div class="panel-title">Risultato</div>
     <div class="status-line">
-      <span id="decisionBadge" class="badge neutral">—</span>
-      <span id="latencyLabel" style="font-family:'IBM Plex Mono',monospace; font-size:0.78rem; color:var(--muted);"></span>
+      <span id="decisionBadge" class="badge neutral">in attesa</span>
+      <span id="latencyLabel" style="font-family:'JetBrains Mono',monospace; font-size:0.76rem; color:var(--ink-soft);"></span>
     </div>
     <pre id="resultBox"></pre>
   </div>
@@ -226,7 +272,7 @@ async function checkHealth() {
     const res = await fetch('/health');
     if (res.ok) {
       const data = await res.json();
-      el.textContent = 'operativo · ' + data.status;
+      el.textContent = 'operativo, stato ' + data.status;
       dot.className = 'dot up';
     } else {
       el.textContent = 'risponde con errore ' + res.status;
@@ -240,61 +286,69 @@ async function checkHealth() {
 checkHealth();
 
 const CP = {
-  whitelist: document.querySelectorAll('#cp-whitelist .pylon'),
-  ratelimit: document.querySelectorAll('#cp-ratelimit .pylon'),
-  redact: document.querySelectorAll('#cp-redact .pylon'),
-  provider: document.querySelectorAll('#cp-provider .pylon-fill'),
+  whitelist: document.querySelectorAll('#cp-whitelist .stamp'),
+  ratelimit: document.querySelectorAll('#cp-ratelimit .stamp'),
+  redact: document.querySelectorAll('#cp-redact .stamp'),
+  provider: document.querySelectorAll('#cp-provider .stamp-fill'),
+};
+const stampText = {
+  whitelist: document.querySelector('#cp-whitelist .stamp-text'),
+  ratelimit: document.querySelector('#cp-ratelimit .stamp-text'),
+  redact: document.querySelector('#cp-redact .stamp-text'),
 };
 const token = document.getElementById('token');
-const COLORS = { pass: '#3ee6d0', redact: '#a48af5', block: '#ff6b5e', idle: '#24374e' };
+const COLORS = { pass: '#3f5d49', redact: '#a8792e', block: '#8c4536', idle: '#cabd9d' };
 
 function resetBridge() {
   Object.values(CP).flatMap(list => Array.from(list)).forEach(el => {
-    if (el.tagName === 'circle' && el.classList.contains('pylon-fill')) {
-      el.setAttribute('fill', '#4f6a86');
-    } else if (el.tagName === 'circle') {
-      el.setAttribute('stroke', COLORS.idle);
-      el.style.filter = 'none';
+    if (el.classList.contains('stamp-fill')) {
+      el.setAttribute('fill', '#8a7f68');
     } else {
       el.setAttribute('stroke', COLORS.idle);
     }
   });
+  Object.values(stampText).forEach(el => { el.setAttribute('fill', COLORS.idle); el.style.opacity = '0'; });
   token.setAttribute('opacity', '0');
 }
 
-function paint(group, color) {
+function paint(key, color, label) {
+  const group = CP[key];
   group.forEach(el => {
-    if (el.tagName === 'circle' && el.classList.contains('pylon-fill')) {
+    if (el.classList.contains('stamp-fill')) {
       el.setAttribute('fill', color);
-    } else if (el.tagName === 'circle') {
-      el.setAttribute('stroke', color);
-      el.style.filter = 'drop-shadow(0 0 4px ' + color + ')';
     } else {
       el.setAttribute('stroke', color);
     }
   });
+  const txt = stampText[key];
+  if (txt) {
+    txt.textContent = label;
+    txt.setAttribute('fill', color);
+    txt.style.opacity = '1';
+  }
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-async function animateJourney(stopAt, finalColor) {
+async function animateJourney(stopAt, finalColor, finalLabel) {
   const stops = [
-    { x: 190, key: 'whitelist' },
-    { x: 340, key: 'ratelimit' },
-    { x: 490, key: 'redact' },
-    { x: 680, key: 'provider' },
+    { key: 'whitelist' },
+    { key: 'ratelimit' },
+    { key: 'redact' },
+    { key: 'provider' },
   ];
   resetBridge();
   token.setAttribute('opacity', '1');
+  const xByKey = { whitelist: 190, ratelimit: 340, redact: 490, provider: 680 };
   for (const stop of stops) {
-    await sleep(220);
-    token.setAttribute('cx', String(stop.x));
-    const reachedButBlockedHere = stop.key === stopAt;
-    if (reachedButBlockedHere) {
-      paint(CP[stop.key], finalColor);
+    await sleep(230);
+    token.setAttribute('cx', String(xByKey[stop.key]));
+    const isFinal = stop.key === stopAt;
+    if (isFinal) {
+      paint(stop.key, finalColor, finalLabel);
       if (finalColor === COLORS.block) return;
-    } else {
-      paint(CP[stop.key], COLORS.pass);
+    } else if (stop.key !== 'provider') {
+      paint(stop.key, COLORS.pass, 'OK');
     }
     if (stop.key === stopAt) break;
   }
@@ -314,10 +368,10 @@ document.getElementById('sendBtn').addEventListener('click', async () => {
   const maxTokens = parseInt(document.getElementById('maxTokens').value, 10) || 300;
 
   btn.disabled = true;
-  btn.textContent = 'Invio in corso…';
+  btn.textContent = 'invio in corso';
   resultPanel.style.display = 'block';
   badge.className = 'badge neutral';
-  badge.textContent = '—';
+  badge.textContent = 'in attesa';
   resultBox.textContent = '';
   latencyLabel.textContent = '';
 
@@ -342,25 +396,25 @@ document.getElementById('sendBtn').addEventListener('click', async () => {
 
       if (decision === 'deny') {
         badge.className = 'badge deny';
-        badge.textContent = 'deny';
-        if (reason.includes('whitelist')) await animateJourney('whitelist', COLORS.block);
-        else if (reason.includes('rate limit') || reason.includes('volume limit')) await animateJourney('ratelimit', COLORS.block);
-        else await animateJourney('redact', COLORS.block);
+        badge.textContent = 'respinta';
+        if (reason.includes('whitelist')) await animateJourney('whitelist', COLORS.block, 'NO');
+        else if (reason.includes('rate limit') || reason.includes('volume limit')) await animateJourney('ratelimit', COLORS.block, 'NO');
+        else await animateJourney('redact', COLORS.block, 'NO');
       } else if (decision === 'allow_with_redaction') {
         badge.className = 'badge redact';
-        badge.textContent = 'allow · redatto';
-        await animateJourney('provider', COLORS.pass);
-        paint(CP.redact, COLORS.redact);
+        badge.textContent = 'accettata, dati oscurati';
+        await animateJourney('provider', COLORS.pass, 'OK');
+        paint('redact', COLORS.redact, 'OSC');
       } else {
         badge.className = 'badge allow';
-        badge.textContent = 'allow';
-        await animateJourney('provider', COLORS.pass);
+        badge.textContent = 'accettata';
+        await animateJourney('provider', COLORS.pass, 'OK');
       }
 
       if (data.latency_ms != null) latencyLabel.textContent = data.latency_ms + ' ms';
     } else {
       badge.className = 'badge deny';
-      badge.textContent = 'HTTP ' + res.status;
+      badge.textContent = 'errore HTTP ' + res.status;
     }
     resultBox.textContent = JSON.stringify(data, null, 2);
   } catch (e) {
@@ -369,7 +423,7 @@ document.getElementById('sendBtn').addEventListener('click', async () => {
     resultBox.textContent = String(e);
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Invia richiesta →';
+    btn.textContent = 'Invia richiesta';
   }
 });
 </script>
